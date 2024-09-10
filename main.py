@@ -19,7 +19,6 @@ def run_cot_decoding(args):
                                pattern=args.pattern, 
                                topk=args.topk,
                                stop=args.stop_criteria,
-                               remove_long_answers=args.remove_long_answers,
                                methods=args.methods)
 
     loaded_datasets = load_datasets(args.datasets)
