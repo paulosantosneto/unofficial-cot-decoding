@@ -23,7 +23,7 @@ pip install -r requirements.txt
 python3 main.py --max_new_tokens 300 \
                 --model microsoft/phi-2 \
                 --topk 10 \
-                --datasets multi_arith svamp \
+                --datasets multiarith svamp \
                 --methods gd cd cds
 ```
 

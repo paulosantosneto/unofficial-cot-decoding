@@ -6,8 +6,7 @@ from vllm import LLM, SamplingParams
 
 class COTDecoding():
 
-    def __init__(self, model, max_new_tokens: int, pattern: str, topk: int, stop: List[str], template: str='standard', methods: List[str]):
-
+    def __init__(self, model, max_new_tokens: int, pattern: str, topk: int, stop: List[str], methods: List[str], template: str='standard'):
         self.model = model
         self.max_new_tokens = max_new_tokens
         self.stop = stop
@@ -17,16 +16,11 @@ class COTDecoding():
         self.verbose = True
         self.methods = methods
         self.model.llm_engine.model_config.max_logprobs = self.topk + 1
-        self.remove_nonsense_answers = remove_nonsense_answers
         self.tokenizer = self.model.llm_engine.tokenizer.tokenizer
 
         if template == 'prompt': self.format_question = self.prompt_template
     
     def extract_methods(self, paths: Dict[str, str]):
-
-        if self.remove_nonsense_answers: 
-            paths = [path for path in paths if len(self.tokenizer.encode(path['reasoning'])) < self.max_new_tokens - 1]
-            
         methods = {}
         # greedy decode
         if 'gd' in self.methods:
