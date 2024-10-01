@@ -10,7 +10,6 @@ from src import *
 import re
 from tqdm import tqdm
 from dataclasses import dataclass, asdict
-from peft import LoraConfig, get_peft_model
 
 def get_args():
     
@@ -65,6 +64,7 @@ def print_output(prompt, cot_outputs):
     
     cot_decoding_max_acc = exact_match(best_score(log_outputs['cot_decoding'], k=k+1), ground_truth)
     cot_decoding_agg_acc = exact_match(self_consistency(log_outputs['cot_decoding'], k=k+1), ground_truth)
+    
 def convert_to_string(example):
     example['answer'] = str(example['answer'])
     return example
@@ -123,9 +123,6 @@ def save_logs(log_outputs: Dict, dataset_name: str, log_path: str):
 
     with open(f'{dataset_name}_cot_decoding.json', 'w') as f:
         json.dump(log_outputs['cot_decoding'], f, indent=4)
-    
-    with open(f'{dataset_name}_leco_decoding.json', 'w') as f:
-        json.dump(log_outputs['leco*'], f, indent=4)
 
 def extract_cot_paths_from_dataset(dataset: DatasetDict,
                                       dataset_name: str,
@@ -140,8 +137,7 @@ def extract_cot_paths_from_dataset(dataset: DatasetDict,
         dataset = dataset[field]
     else:
         raise ValueError("Field must be one of 'train', 'val', or 'test'.")
-
-    
+        
     prompts = dataset[prompt_key][init_samples:max_samples]
     
     log_outputs = {'cot_decoding': {}}
