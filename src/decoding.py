@@ -40,7 +40,8 @@ class GeneratePaths():
         self.stop = stop
         self.topk = topk
         self.model.llm_engine.model_config.max_logprobs = self.topk + 1
-        self.tokenizer = self.model.llm_engine.tokenizer.tokenizer
+        #self.tokenizer = self.model.llm_engine.tokenizer.tokenizer
+        self.tokenizer = self.model.get_tokenizer()
         self.prompt = prompt
 
     def search_cots(self, raw_prompt: str) -> List[str]:
@@ -186,3 +187,4 @@ class CoTDecoding():
         )
         
         return output
+
